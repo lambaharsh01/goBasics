@@ -74,6 +74,14 @@ func timeAfter(){
     }()
 
 
+
+	
+	// HERE IS THE EXAMPLE OF NON BLOCKING CHANNELS.
+	
+	//the select case will automatically take the default value if it does not recive the channels response the the activity reached cases section.
+
+	// Here’s a non-blocking receive. If a value is available on messages then select will take the <-messages case with that value. If not it will immediately take the default case
+
     select { // here a case when our code is executed before time.After(2 * time.Second) then our code runs else our default section executes when it took more than 2 secs and we want to concide the code that it took more than estimated time to run.
     case result := <-ch:
         fmt.Println(result, "Result")
