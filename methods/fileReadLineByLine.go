@@ -25,9 +25,8 @@ func main() {
     // for scanner.Scan() {
     //     fmt.Println(scanner.Text()) // give me test of the read protion
     // }
-
-
     // METHOD 2 : stop reading if i have found what i was looking for 
+    
     scanner := bufio.NewScanner(file)
         for scanner.Scan() {
             line := scanner.Text()  // Get the current line
@@ -39,7 +38,6 @@ func main() {
                 break  // Exit the loop once the target string is found
             }
         }
-
 
 
 	//returns any error that may have occurred during the scanning process. This method is called after you finish reading the file with the bufio.Scanner to check if there were any errors while scanning lines.
