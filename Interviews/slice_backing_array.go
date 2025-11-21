@@ -1,5 +1,8 @@
+package main
 
-func main() {
+import "fmt"
+
+func SliceBackingArray() {
 
 	arr := [5]int{1, 2, 3, 4, 5}
 	slice := arr[:3]
