@@ -19,11 +19,11 @@ func VariableDeclaration() {
 
 	fmt.Println(strArr)
 
+}
 
-	
 
-	// EMPTY ANY VARIABLE DECLERATION
-	
+func ZeroValueOfEmptyInterface(){
+
 	var anyVar interface{} // OR any
 	
 	if anyVar == nil {
@@ -48,4 +48,11 @@ func VariableDeclaration() {
 		fmt.Println("unknown type")
 	}
 
+
+}
+
+
+func ArrayLiteralEllipsisLength(){
+	arr := [...]int{1, 2, 3, 4} // array is defined as  [4]int
+	println(arr) 
 }
