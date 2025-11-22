@@ -5,4 +5,6 @@ func main() {
 	BlankIdentifierImport()
 	ParametersArraysVsSlices()
 	SliceBackingArray()
+
+	GoStructMemorySize()
 }
