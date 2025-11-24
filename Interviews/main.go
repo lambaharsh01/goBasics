@@ -9,6 +9,7 @@ func main() {
 	
 	ParametersArraysVsSlices()
 	SliceBackingArray()
+	SliceResizingLenCap()
 
 	GoStructMemorySize()
 }
