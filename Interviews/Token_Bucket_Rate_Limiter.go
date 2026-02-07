@@ -1,77 +1,48 @@
 package main
 
 import (
-	"fmt"
-	"math"
 	"sync"
 	"time"
 )
 
-type TokenDetails struct {
-	Cap        int
-	Tokens     int
-	Rate       int
+type TokenBucket struct {
+	Cap        float64
+	Tokens     float64
+	RPS        float64
 	LastRefill time.Time
 	Mx         sync.Mutex
 }
 
-func (td *TokenDetails) Allow() bool {
-	td.Mx.Lock()
-	defer td.Mx.Unlock()
+func (t *TokenBucket) Allow() bool {
+	t.Mx.Lock()
+	defer t.Mx.Unlock()
 
 	now := time.Now()
-	td.Tokens += int(now.Sub(td.LastRefill).Seconds()) * td.Rate
-	
-	if t.Cap < t.Token { // if according to the time buffer token rate increased more than the cap reduce down it to the cap
-		t.Token = t.Cap
+	secDiff := float64(now.Sub(t.LastRefill).Seconds()) * t.RPS
+	t.Tokens += secDiff   // ellipse has to be added to the existing tokens
+	if t.Cap < t.Tokens { // if tokens(because of the time passes) are more than the capacity we cap it
+		t.Tokens = t.Cap
 	}
-	
-	td.LastRefill = now
 
-	if td.Tokens > 0 {
-		td.Tokens--
+	t.LastRefill = now
+
+	if t.Tokens >= 1 { // if 0.2 and 0.2-1 it becomes -0.8 breaks the algo
+		t.Tokens--
 		return true
 	}
+
 	return false
 }
-func Constructor(cap, rate int) *TokenDetails {
-	return &TokenDetails{
+
+func Constructor(cap, rps float64) *TokenBucket {
+	return &TokenBucket{
 		Cap:        cap,
 		Tokens:     cap,
-		Rate:       rate, // token per second
+		RPS:        rps,
 		LastRefill: time.Now(),
 	}
 }
+
 func main() {
-
-	m := map[int]*TokenDetails{}
-	var mx sync.Mutex
-
-	var wg sync.WaitGroup
-
-	for i := 0; i < 10; i++ {
-		wg.Add(1)
-
-		go func() {
-			defer wg.Done()
-
-			mx.Lock()
-			t, ok := m[1]
-			if !ok {
-				t = Constructor(5, 3)
-				m[1] = t
-			}
-			mx.Unlock()
-
-			if t.Allow() {
-				fmt.Println("Allowed")
-			} else {
-				fmt.Println("Not Allowed")
-				time.Sleep(time.Millisecond * 1100)
-			}
-		}()
-
-	}
-
-	wg.Wait()
+// Implement it here
 }
