@@ -21,7 +21,11 @@ func (td *TokenDetails) Allow() bool {
 
 	now := time.Now()
 	td.Tokens += int(now.Sub(td.LastRefill).Seconds()) * td.Rate
-	td.Tokens = int(math.Min(float64(td.Tokens), float64(td.Cap)))
+	
+	if t.Cap < t.Token { // if according to the time buffer token rate increased more than the cap reduce down it to the cap
+		t.Token = t.Cap
+	}
+	
 	td.LastRefill = now
 
 	if td.Tokens > 0 {
